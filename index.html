@@ -145,7 +145,16 @@ img { display: block; max-width: 100%; }
 .work-field + h3 { margin-top: 2px; }
 .work-desc { color: var(--muted); font-size: 0.95rem; }
 .work-tools { margin-top: 8px !important; font-size: 0.85rem; color: var(--muted); }
-.work-link { display: inline-block; margin-top: 8px; font-size: 0.9rem; font-weight: 500; }
+.work-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 12px; }
+.work-link { font-size: 0.9rem; font-weight: 500; }
+.fs-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 40px; padding: 0 14px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+}
+.fs-btn:hover { border-color: var(--ink); }
+.fs-btn svg { width: 16px; height: 16px; flex: none; }
 
 .media {
   position: relative; aspect-ratio: 16 / 9; overflow: hidden;
@@ -153,6 +162,28 @@ img { display: block; max-width: 100%; }
 }
 .media img { width: 100%; height: 100%; object-fit: cover; }
 .media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* Drive's phone player adds a header bar, so give it more height once playing. */
+@media (max-width: 639px) { .media.is-live { aspect-ratio: 4 / 3; } }
+
+/* Fullscreen viewer */
+.viewer {
+  position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh;
+  max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: #000; color: #fff;
+}
+.viewer[open] { display: flex; flex-direction: column; }
+.viewer::backdrop { background: #000; }
+.viewer-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; }
+.viewer-title { margin: 0; min-width: 0; font-size: 1rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.viewer-close {
+  flex: none; display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 16px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff;
+  font: inherit; font-weight: 600; cursor: pointer;
+}
+.viewer-close:hover { background: rgba(255,255,255,.12); }
+.viewer-close svg { width: 18px; height: 18px; }
+.viewer iframe { flex: 1; width: 100%; border: 0; background: #000; }
 .media .no-thumb { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; opacity: .55; font-size: .9rem; }
 .play {
   position: absolute; inset: 0; width: 100%;
@@ -204,7 +235,7 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
   :root { --paper: #fff; --surface: #fff; --ink: #000; --muted: #333; --line: #bbb; }
   body { font-size: 11pt; line-height: 1.55; }
   .page { max-width: none; padding: 0; }
-  .actions, .media, .work-link, footer, .timeline, .screen-only { display: none !important; }
+  .actions, .media, .work-actions, .viewer, footer, .timeline, .screen-only { display: none !important; }
   .print-only { display: revert; }
   .intro { padding: 0 0 12px; }
   .avatar { width: 72px; height: 72px; }
@@ -249,6 +280,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
         اتصل بي
       </a>
+      <a class="btn" href="https://wa.me/qr/YUOY5GWKUME5N1" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg>
+        واتساب
+      </a>
       <button class="btn" type="button" id="print-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
         حفظ السيرة PDF
@@ -284,7 +319,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
             <h3>إعلان تجاري لعلامة تجارية</h3>
             <p class="work-desc">مونتاج إعلان ترويجي مع تلوين سينمائي وتصميم صوت يُبرز تفاصيل المنتج.</p>
             <p class="work-tools" dir="ltr">Premiere Pro, DaVinci Resolve</p>
-            <a class="work-link" href="https://drive.google.com/file/d/1qJsoTpokjYu89kb7FikhfSsIPnZkRhu0/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            <div class="work-actions">
+              <button class="fs-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>شاشة كاملة</button>
+              <a class="work-link" href="https://drive.google.com/file/d/1qJsoTpokjYu89kb7FikhfSsIPnZkRhu0/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            </div>
           </article>
 
           <article class="work">
@@ -295,7 +333,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
             <h3>فيديو موشن جرافيك توضيحي</h3>
             <p class="work-desc">فيديو يشرح خدمات شركة تقنية، مع تحريك ثلاثي الأبعاد للشعار والعناصر.</p>
             <p class="work-tools" dir="ltr">After Effects, 2D/3D Motion</p>
-            <a class="work-link" href="https://drive.google.com/file/d/1EWHTe03dFN1kHxrcXaun4QZpy7V6kAG9/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            <div class="work-actions">
+              <button class="fs-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>شاشة كاملة</button>
+              <a class="work-link" href="https://drive.google.com/file/d/1EWHTe03dFN1kHxrcXaun4QZpy7V6kAG9/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            </div>
           </article>
 
           <article class="work">
@@ -306,7 +347,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
             <h3>مونتاج فيديو يوتيوب طويل</h3>
             <p class="work-desc">لقطات من مونتاج فيديو لأحد صنّاع المحتوى على يوتيوب.</p>
             <p class="work-tools" dir="ltr">Premiere Pro, DaVinci Resolve</p>
-            <a class="work-link" href="https://drive.google.com/file/d/1X3utJmCG9-8WGNedlLJkvzK8iuG-8pS_/view?usp=drivesdk" target="_blank" rel="noopener">فتح في Google Drive</a>
+            <div class="work-actions">
+              <button class="fs-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>شاشة كاملة</button>
+              <a class="work-link" href="https://drive.google.com/file/d/1X3utJmCG9-8WGNedlLJkvzK8iuG-8pS_/view?usp=drivesdk" target="_blank" rel="noopener">فتح في Google Drive</a>
+            </div>
           </article>
 
           <article class="work">
@@ -317,7 +361,10 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
             <h3>سودي، مساعد محادثة بالذكاء الاصطناعي</h3>
             <p class="work-desc">طوّرت مساعد محادثة باسم «سودي» بشخصية لطيفة في الردود، حسب طلب العميل.</p>
             <p class="work-tools" dir="ltr">Full-Stack, UI/UX</p>
-            <a class="work-link" href="https://drive.google.com/file/d/1XotCuskxIdT8UgAdUSFtelERKy-e8VEo/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            <div class="work-actions">
+              <button class="fs-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>شاشة كاملة</button>
+              <a class="work-link" href="https://drive.google.com/file/d/1XotCuskxIdT8UgAdUSFtelERKy-e8VEo/view" target="_blank" rel="noopener">فتح في Google Drive</a>
+            </div>
           </article>
 
         </div>
@@ -399,12 +446,21 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
       <ul class="plain contact-list section-body">
         <li><strong>البريد:</strong> <a href="mailto:dia2001tic@gmail.com">dia2001tic@gmail.com</a></li>
         <li><strong>الهاتف:</strong> <a href="tel:+9647862247686" dir="ltr">+964 786 224 7686</a></li>
+        <li><strong>واتساب:</strong> <a href="https://wa.me/qr/YUOY5GWKUME5N1" target="_blank" rel="noopener">راسلني على واتساب</a></li>
       </ul>
     </section>
   </main>
 
   <footer>© <span id="year">2026</span> ضياء حسين علي</footer>
 </div>
+
+<dialog class="viewer" id="viewer" aria-labelledby="viewer-title">
+  <div class="viewer-bar">
+    <h2 class="viewer-title" id="viewer-title"></h2>
+    <button class="viewer-close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>إغلاق</button>
+  </div>
+  <iframe allow="autoplay; fullscreen" allowfullscreen></iframe>
+</dialog>
 
 <script>
 (function () {
@@ -432,31 +488,62 @@ footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--m
   document.getElementById("year").textContent = now.getFullYear();
   document.getElementById("print-btn").addEventListener("click", function () { window.print(); });
 
-  // Works: Drive thumbnail as poster; click swaps in the Drive player.
+  // Works: Drive thumbnail as poster; play swaps in the Drive player inline.
+  var preview = function (id) { return "https://drive.google.com/file/d/" + id + "/preview"; };
   document.querySelectorAll(".media[data-drive]").forEach(function (m) {
     var id = m.dataset.drive;
     var btn = m.querySelector(".play");
-    var img = new Image();
-    img.alt = "";
-    img.loading = "lazy";
-    img.src = "https://drive.google.com/thumbnail?id=" + id + "&sz=w1280";
-    img.onerror = function () {
-      img.remove();
+    var cover = new Image();
+    cover.alt = "";
+    cover.loading = "lazy";
+    cover.src = "https://drive.google.com/thumbnail?id=" + id + "&sz=w1280";
+    cover.onerror = function () {
       var n = document.createElement("span");
       n.className = "no-thumb";
       n.textContent = "معاينة غير متاحة";
-      m.insertBefore(n, btn);
+      cover.replaceWith(n);
+      cover = n;
     };
-    m.insertBefore(img, btn);
+    m.insertBefore(cover, btn);
+    m.resetPoster = function () { m.classList.remove("is-live"); m.replaceChildren(cover, btn); };
     btn.addEventListener("click", function () {
       var f = document.createElement("iframe");
-      f.src = "https://drive.google.com/file/d/" + id + "/preview";
+      f.src = preview(id);
       f.title = btn.getAttribute("aria-label");
       f.allow = "autoplay; fullscreen";
       f.allowFullscreen = true;
+      m.classList.add("is-live");
       m.replaceChildren(f);
       f.focus();
     });
+  });
+
+  // Fullscreen viewer: whole screen on phones and desktops alike.
+  var viewer = document.getElementById("viewer");
+  var vFrame = viewer.querySelector("iframe");
+  var lastTrigger = null;
+  document.querySelectorAll(".fs-btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var work = b.closest(".work");
+      var m = work.querySelector(".media");
+      var title = work.querySelector("h3").textContent;
+      if (!viewer.showModal) { window.open(preview(m.dataset.drive), "_blank", "noopener"); return; }
+      m.resetPoster(); // stop the inline copy so audio doesn't play twice
+      lastTrigger = b;
+      document.getElementById("viewer-title").textContent = title;
+      vFrame.title = title;
+      vFrame.src = preview(m.dataset.drive);
+      viewer.showModal();
+      if (viewer.requestFullscreen) viewer.requestFullscreen().catch(function () {});
+    });
+  });
+  viewer.querySelector(".viewer-close").addEventListener("click", function () {
+    if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
+    viewer.close();
+  });
+  viewer.addEventListener("close", function () {
+    vFrame.src = "about:blank";
+    if (lastTrigger) lastTrigger.focus();
   });
 })();
 </script>
